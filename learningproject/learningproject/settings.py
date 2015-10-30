@@ -38,6 +38,18 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'TheFirstApp',
+    # added 27.10. by thomas according to django-wiki.readthedocs.org/en/latest/installation.html:
+    'django.contrib.sites',
+    'django.contrib.humanize',
+    'django_nyt',
+    'mptt',
+    'sekizai',
+    'sorl.thumbnail',
+    'wiki',
+    'wiki.plugins.attachments',
+    'wiki.plugins.notifications',
+    'wiki.plugins.images',
+    'wiki.plugins.macros',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -49,6 +61,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #'django.middleware.security.SecurityMiddleware',
+    # @thomas Wo hast du das bestimmt? 
 )
 
 ROOT_URLCONF = 'learningproject.urls'
@@ -58,16 +71,35 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
         'APP_DIRS': True,
+        # ...
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                "sekizai.context_processors.sekizai",
             ],
         },
     },
 ]
+
+# TEMPLATE_CONTEXT_PROCESSORS = (
+#     'django.core.context_processors.request',
+#     'django.contrib.auth.context_processors.auth',
+#     'django.contrib.messages.context_processors.messages',
+#     'django.template.context_processors.i18n',
+#     'django.template.context_processors.media',
+#     'django.template.context_processors.static',
+#     'django.template.context_processors.tz',
+#     "sekizai.context_processors.sekizai",
+# )
+
+SITE_ID = 1
 
 WSGI_APPLICATION = 'learningproject.wsgi.application'
 
