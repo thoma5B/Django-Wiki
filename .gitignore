@@ -8,9 +8,15 @@ __pycache__/
 # C extensions
 *.so
 
+
+# DB and DB-Backups
+db.*
+*.dump
+
 # Distribution / packaging
 .Python
 env/
+venvs/
 build/
 develop-eggs/
 dist/
@@ -142,4 +148,3 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-
