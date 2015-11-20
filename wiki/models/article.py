@@ -342,6 +342,7 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
     #                             related_name='redirect_set')
 
     def __str__(self):
+        #if self.revision_number is None: self.revision_number = 0
         return "%s (%d)" % (self.title, self.revision_number)
 
     def inherit_predecessor(self, article):

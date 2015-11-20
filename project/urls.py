@@ -29,3 +29,14 @@ urlpatterns += [
     url(r'^wiki/', get_wiki_pattern()),
 
 ]
+
+
+from tastypie.api import Api
+from wiki.api import ArticleResource, ArticleRevisionResource#, UserResource
+v1_api = Api(api_name='v1')
+# v1_api.register(UserResource())
+v1_api.register(ArticleResource())
+v1_api.register(ArticleRevisionResource())
+urlpatterns += [
+    url(r'^api/', include(v1_api.urls)),
+]

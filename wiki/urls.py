@@ -232,11 +232,11 @@ def get_pattern(app_name="wiki", namespace="wiki", url_config_class=None):
         else:
             url_config_class = get_class_from_str(url_config_classname)
     urlpatterns = url_config_class().get_urls()
-    
+
     if DJANGO_VERSION < (1, 8):
         from django.conf.urls import patterns
         urlpatterns = patterns('', *urlpatterns)
-    
+
     return urlpatterns, app_name, namespace
 
 
@@ -247,3 +247,8 @@ def get_pattern(app_name="wiki", namespace="wiki", url_config_class=None):
 from wiki.core.plugins.loader import load_wiki_plugins
 
 load_wiki_plugins()
+
+# def get_wiki_plugins():
+#     pass
+#
+# get_wiki_plugins()
