@@ -9,6 +9,8 @@ from wiki.core.plugins import registry
 from wiki.views import article, accounts
 from wiki.core.utils import get_class_from_str
 
+# from django.conf.urls.i18n import i18n_patterns
+# import django.conf.urls.i18n
 
 class WikiURLPatterns(object):
 
@@ -53,6 +55,7 @@ class WikiURLPatterns(object):
         # This ALWAYS has to be the last of all the patterns since
         # the paths in theory could wrongly match other targets.
         urlpatterns += self.get_article_path_urls()
+        # urlpatterns += [url(r'^i18n/', include('django.conf.urls.i18n'))]
         return urlpatterns
 
     def get_root_urls(self):

@@ -39,6 +39,20 @@
           {% endblock %}
         </div>
         <div class="navbar-collapse collapse">
+
+          <form class="navbar-form navbar-right" action="{% url 'set_language' %}" method="post">
+            {% csrf_token %}
+            <input name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}" />
+            <!-- request.get_full_path|slice:'3:' -->
+            <input name="language" type="hidden" value="es" />
+            <input type="submit" value="ES" />
+
+            <input name="next" type="hidden" value="{{ request.get_full_path }}" />
+            <input name="language" type="hidden" value="en" />
+            <input type="submit" value="EN" />
+
+          </form>
+
           <form class="navbar-form navbar-right" id="wiki-search-form" method="GET" action="{% url 'wiki:search' %}">
             <div class="input-group">
               <input type="search" class="form-control search-query" name="q" placeholder="{% trans "Search..." %}" />
@@ -49,6 +63,7 @@
               </span>
             </div><!-- /input-group -->
           </form>
+
           <div class="navbar-right">
             {% if user.is_authenticated %}
             <ul class="nav navbar-nav">
@@ -84,8 +99,8 @@
           </div>
           {% block wiki_header_navlinks %}
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/">{% trans "Home" %}</a></li>
-            <li><a href="https://github.com/django-wiki/django-wiki" target="_blank">{% trans "About" %}</a></li>
+            <!-- <li class="active"><a href="/">{#% trans "Home" %#}</a></li> -->
+            <!-- <li><a href="https://github.com/django-wiki/django-wiki" target="_blank">{#% trans "About" %#}</a></li> -->
           </ul>
           {% endblock %}
         </div>

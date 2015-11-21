@@ -33,7 +33,7 @@ For production run the uwsgi-server together with nginx
 
 `uwsgi uwsgi.ini`
 
-and 
+and
 
 `ln -s /full/path/to/Django-Wiki/nginx.conf /etc/nginx/sites-enabled/djangowiki.conf`
 
@@ -53,4 +53,4 @@ The wiki is cloned from
 
 https://github.com/django-wiki/django-wiki.git
 
-on Nov 19th which is under [GPUv3](LICENSE.md)
+on Nov 19th which is under [GPLv3](LICENSE.md)
