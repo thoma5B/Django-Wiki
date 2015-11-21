@@ -40,18 +40,17 @@
         </div>
         <div class="navbar-collapse collapse">
 
-          <form class="navbar-form navbar-right" action="{% url 'set_language' %}" method="post">
-            {% csrf_token %}
-            <input name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}" />
-            <!-- request.get_full_path|slice:'3:' -->
-            <input name="language" type="hidden" value="es" />
-            <input type="submit" value="ES" />
-
-            <input name="next" type="hidden" value="{{ request.get_full_path }}" />
-            <input name="language" type="hidden" value="en" />
-            <input type="submit" value="EN" />
-
-          </form>
+          <div class="navbar-form navbar-right" >
+            <form class="btn-group btn-group-sm" action="{% url 'set_language' %}" method="post">
+               {% csrf_token %}
+              <input name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}" />
+               <!-- <label class="btn btn-primary active"> -->
+              <input class="btn btn-group btn-primary" name="language" value="de" type="submit"/>
+            <!-- </label> -->
+              <input class="btn btn-group btn-primary" name="language" value="en" type="submit"/>
+              <input class="btn btn-group btn-primary" name="language" value="es" type="submit"/>
+            </form>
+          </div>
 
           <form class="navbar-form navbar-right" id="wiki-search-form" method="GET" action="{% url 'wiki:search' %}">
             <div class="input-group">
@@ -121,7 +120,7 @@
       {% endif %}
 
       <!-- Reserved for breadcrumbs -->
-      {% block wiki_breadcrumbs %}{% endblock %}
+      <!-- {% block wiki_breadcrumbs %}{% endblock %} -->
 
       <!-- Main page contents go here -->
       {% block wiki_contents %}{% endblock %}
