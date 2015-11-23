@@ -33,7 +33,43 @@
     </div>
   </div>
 
+      <div class="pull-left">
+        <div class="btn-group">
+          <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" style="padding: 7px;" title="{% trans "Discussions for" %} {{ article.current_revision.title }}">
+            <span class="fa fa-sitemap" style="margin-left: 5px;"> {% trans "Discussions" %}  </span>
+            <span class="caret" style="margin-left: 5px;"></span>
+          </a>
+          <ul class="dropdown-menu">
+            {% for child in children_slice %}
+              <li>
+                <a href="{% url 'wiki:get' path=child.path %}">
+                  {{ child.article.current_revision.title }}
+                </a>
+              </li>
+              {% empty %}
+              <li><a href="#"><em>{% trans "No discussion yet" %}</em></a></li>
+            {% endfor %}
+            {% if children_slice_more %}
+            <li><a href="#"><em>{% trans "...and more" %}</em></a></li>
+            {% endif %}
+            {# <li class="divider"></li> #}
+          </ul>
+        </div>
+      </div>
+
+      <div class="pull-left" style="margin-left: 10px;">
+        <div class="btn-group">
+          <a class="btn btn-info" href="{% url 'wiki:create' path=urlpath.parent.path %}" style="padding: 7px;" title="{% trans "New discussion" %} ">
+            <span class="fa fa-file" ></span>
+            <span class="fa" style="margin-left: 5px;">{% trans "Start new" %} </span> 
+            <span class="fa fa-arrow-right" style="margin-left: 5px;"></span>
+          </a>
+        </div>
+      </div>
+
 {% endblock %}
+
+
 
 {% block wiki_footer_prepend %}
   <p style="margin-bottom: 10px;"><em>{% trans "This article was last modified:" %} {{ article.current_revision.modified }}</em></p>
