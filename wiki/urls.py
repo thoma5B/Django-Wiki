@@ -12,8 +12,8 @@ from wiki.core.utils import get_class_from_str
 # from django.conf.urls.i18n import i18n_patterns
 # import django.conf.urls.i18n
 
-class WikiURLPatterns(object):
 
+class WikiURLPatterns(object):
     '''
     configurator for wiki urls.
 

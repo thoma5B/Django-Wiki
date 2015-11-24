@@ -32,7 +32,7 @@
       {% endblock %}
     </div>
   </div>
-
+  {% if urlpath.parent %}
       <div class="pull-left">
         <div class="btn-group">
           <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" style="padding: 7px;" title="{% trans "Discussions for" %} {{ article.current_revision.title }}">
@@ -66,6 +66,7 @@
           </a>
         </div>
       </div>
+    {% endif %}
 
 {% endblock %}
 

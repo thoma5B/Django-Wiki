@@ -10,7 +10,8 @@
 
     <!-- Le styles -->
     <link href="{{ STATIC_URL }}wiki/bootstrap/css/wiki-bootstrap.min.css" rel="stylesheet">
-
+    <link href="{{ STATIC_URL }}wiki/css/mystyles.css" rel="stylesheet">
+  
     {% render_block "css"%}
     <!-- <link rel="stylesheet" href="/home/Django-Wiki/wiki/plugins/images/static/wiki/colorbox/example1/colorbox.css" /> -->
 
@@ -148,6 +149,7 @@
     <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap.min.js"></script>
     <!-- Optionally enable responsive features in IE8 -->
     <script src="{{ STATIC_URL }}wiki/js/respond.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/umd/dropdown.js"></script>
     {% render_block "js" %}
     <!-- <script type="text/javascript" src="{{ STATIC_URL }}wiki/plugins/notifications/static/wiki/plugins/notifications/js/ui.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}static/wiki/js/article.js"></script>

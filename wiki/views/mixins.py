@@ -40,8 +40,8 @@ class ArticleMixin(TemplateResponseMixin):
         kwargs['urlpath'] = self.urlpath
         kwargs['article'] = self.article
         kwargs['article_tabs'] = registry.get_article_tabs()
-        kwargs['children_slice'] = self.children_slice[:20]
-        kwargs['children_slice_more'] = len(self.children_slice) > 20
+        kwargs['children_slice'] = self.children_slice[:]
+        # kwargs['children_slice_more'] = len(self.children_slice) > 20
         kwargs['plugins'] = registry.get_plugins()
 
         return kwargs

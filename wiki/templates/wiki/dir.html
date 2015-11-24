@@ -53,7 +53,7 @@
     <tr>
       <td>
         <a href="{% url 'wiki:get' path=urlpath.path %}"> {{ urlpath.article.current_revision.title }} </a> 
-        <a href="{% url 'wiki:dir' path=urlpath.path %}" class="list-children"> › </a>
+        <a href="{% url 'wiki:dir' path=urlpath.path.children %}" class="list-children"> › </a>
         {% if urlpath.article.current_revision.deleted %}
           <span class="fa fa-trash"></span>
         {% endif %}
