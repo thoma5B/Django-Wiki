@@ -40,7 +40,10 @@ class Article(models.Model):
         'ArticleRevision', verbose_name=_('current revision'),
         blank=True, null=True, related_name='current_set',
         help_text=_(
-            'The revision being displayed for this article. If you need to do a roll-back, simply change the value of this field.'),)
+            'The revision being displayed for this article. If \
+            you need to do a roll-back, simply change the value \
+            of this field.'),
+        )
 
     created = models.DateTimeField(
         auto_now_add=True,
@@ -55,14 +58,17 @@ class Article(models.Model):
         compat.USER_MODEL, verbose_name=_('owner'),
         blank=True, null=True, related_name='owned_articles',
         help_text=_(
-            'The owner of the article, usually the creator. The owner always has both read and write access.'),
+            'The owner of the article, usually the creator. \
+            The owner always has both read and write access.'),
         on_delete=models.SET_NULL)
 
     group = models.ForeignKey(
         settings.GROUP_MODEL, verbose_name=_('group'),
         blank=True, null=True,
         help_text=_(
-            'Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system.'),
+            'Like in a UNIX file system, permissions can be given \
+            to a user according to group membership. Groups are handled \
+            through the Django auth system.'),
         on_delete=models.SET_NULL)
 
     group_read = models.BooleanField(
@@ -347,7 +353,8 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
         max_length=512, verbose_name=_('article title'),
         null=False, blank=False,
         help_text=_(
-            'Each revision contains a title field that must be filled out, even if the title has not changed'))
+            'Each revision contains a title field that must be filled out, even \
+            if the title has not changed'))
 
     # TODO:
     # Allow a revision to redirect to another *article*. This

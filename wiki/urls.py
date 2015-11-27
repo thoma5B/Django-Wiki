@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from __future__ import absolute_import
 from django import VERSION as DJANGO_VERSION
 from django.conf.urls import url, include
+from django.views.generic.base import TemplateView  # RedirectView,
 
 from wiki.conf import settings
 from wiki.core.plugins import registry
@@ -76,6 +77,14 @@ class WikiURLPatterns(object):
             url('^_revision/diff/(?P<revision_id>\d+)/$',
                 self.article_diff_view,
                 name='diff'),
+            url('^_revision/padlist/$',
+                TemplateView.as_view(template_name="wiki/padlist.html",
+                                     content_type='text/html'),
+                name='padlist'),
+            url('^_revision/articlelist/$',
+                TemplateView.as_view(template_name="wiki/articlelist.html",
+                                     content_type='text/html'),
+                name='articlelist'),
         ]
         return urlpatterns
 

@@ -46,7 +46,8 @@ class URLPath(MPTTModel):
 
     """
     Strategy: Very few fields go here, as most has to be managed through an
-    article's revision. As a side-effect, the URL resolution remains slim and swift.
+    article's revision. As a side-effect, the URL resolution remains slim
+    and swift.
     """
     # Tells django-wiki that permissions from a this object's article
     # should be inherited to children's articles. In this case, it's a static
@@ -54,7 +55,7 @@ class URLPath(MPTTModel):
     INHERIT_PERMISSIONS = True
 
     objects = managers.URLPathManager()
-    
+
     # Do not use this because of
     # https://github.com/django-mptt/django-mptt/issues/369
     # _default_manager = objects
@@ -93,13 +94,14 @@ class URLPath(MPTTModel):
 
     def __cached_ancestors(self):
         """
-        This returns the ancestors of this urlpath. These ancestors are hopefully
-        cached from the article path lookup. Accessing a foreign key included in
-        add_selecte_related on one of these ancestors will not occur an additional
-        sql query, as they were retrieved with a select_related.
+        This returns the ancestors of this urlpath. These ancestors are
+        hopefully cached from the article path lookup. Accessing a foreign
+        key included in add_selecte_related on one of these ancestors will
+        not occur an additional sql query, as they were retrieved with a 
+        select_related.
 
-        If the cached ancestors were not set explicitly, they will be retrieved from
-        the database.
+        If the cached ancestors were not set explicitly, they will be retrieved
+        from the database.
         """
         if not self.get_ancestors().exists():
             self._cached_ancestors = []

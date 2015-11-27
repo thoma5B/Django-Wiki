@@ -199,6 +199,7 @@ class URLPathEmptyQuerySet(EmptyQuerySet, ArticleFkEmptyQuerySetMixin):
     def default_order(self):
         return self
 
+
 class URLPathQuerySet(QuerySet, ArticleFkQuerySetMixin):
 
     def select_related_common(self):
@@ -206,14 +207,14 @@ class URLPathQuerySet(QuerySet, ArticleFkQuerySetMixin):
             "parent",
             "article__current_revision",
             "article__owner")
-    
+
     def default_order(self):
         """Returns elements by there article order"""
         return self.order_by('article__current_revision__title')
 
 
 class URLPathManager(QuerySetCompatMixin, TreeManager):
-    
+
     def get_empty_query_set(self):
         # Pre 1.6 django, we needed a custom inheritor of EmptyQuerySet
         # to pass custom methods. However, 1.6 introduced that EmptyQuerySet

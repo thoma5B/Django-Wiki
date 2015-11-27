@@ -1,6 +1,6 @@
 from tastypie.resources import ModelResource
 from tastypie.authorization import Authorization
-from wiki.models import Article, ArticleRevision
+from wiki.models import Article, ArticleRevision, URLPath
 
 from django.contrib.auth.models import User
 from tastypie import fields
@@ -9,7 +9,7 @@ from tastypie import fields
 class UserResource(ModelResource):
     class Meta:
         queryset = User.objects.all()
-        # resource_name = 'user'
+        resource_name = 'user'
         # one of the following two
         # fields = ['username', 'first_name', 'last_name', 'last_login']
         # excludes = ['email', 'password', 'is_active',
@@ -20,7 +20,7 @@ class UserResource(ModelResource):
 class ArticleResource(ModelResource):
     class Meta:
         queryset = Article.objects.all()
-        # resource_name = 'article' # this is the default resource name
+        resource_name = 'article'  # this is the default resource name
         authorization = Authorization()
 
 
@@ -28,5 +28,13 @@ class ArticleRevisionResource(ModelResource):
     class Meta:
         queryset = ArticleRevision.objects.all()
         resource_name = 'content'
-        fields = ['content', 'title']
+        #fields = ['content', 'title', 'modified']
+        authorization = Authorization()
+
+
+class SlugResource(ModelResource):
+    class Meta:
+        queryset = URLPath.objects.get_queryset()
+        resource_name = 'slug'
+        fields = ['slug']
         authorization = Authorization()

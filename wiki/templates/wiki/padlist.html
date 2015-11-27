@@ -1,0 +1,158 @@
+{% extends "wiki/base.html" %}
+{% load wiki_tags i18n sekizai_tags %}
+
+{% block wiki_contents %}
+
+
+  {% addtoblock "js" %}
+  <script type="text/javascript" src="{{ STATIC_URL }}admin/js/urlify.js"></script>
+    <script>
+// $(document).ready(function(){
+      var BASE_URL = "http://88.198.109.117/api/1/"
+      var mainApp = angular.module('mainApp', [])
+      var apiMethod = "listPads"
+      var params = {
+        "apikey":"2d5c7f62c89a0439461c79d95dda19c230093ca2dad09858669507e18fccef71",
+        "padID":"Nummer1"
+      }
+
+      var paramURI = JSON.stringify(params)
+      
+      mainApp.controller('MainController', ['$scope', '$http', function ($scope, $http){
+        $http.get( BASE_URL + apiMethod + "&" + paramURI)
+          .success(function(data){
+            console.log(data.data)
+            $scope.padIDs = data.data.padIDs
+          })
+      }]);
+
+// GET from etherpad:
+
+// getText?padID=g.lcmkcKedxvzOZHVJ$HTTPAPItest&apikey=2d5c7f62c89a0439461c79d95dda19c230093ca2dad09858669507e18fccef71
+
+
+// listAuthorsOfPad?padID=Nummer1&apikey=2d5c7f62c89a0439461c79d95dda19c230093ca2dad09858669507e18fccef71
+
+// // work with requirejs?????
+// var padManager = require('ep_etherpad-lite/node/db/PadManager');
+//   padManager.listAllPads(function (err, listResult) {
+//     var padNames = listResult.padIDs;
+
+//     padNames.forEach(function (padName) {
+//       // ignore private pads
+//       console.log(padName)
+//       if (padName.indexOf(PRIVATE_PAD_PREFIX) === 0 || padName.indexOf(TEST_PAD_PREFIX) === 0) {
+//         doneAction();
+//         return;
+//       }
+//       padManager.getPad(padName, function (err, pad) {
+//         // ignore pads without any changes
+//         if (pad.head === 0) {
+//           doneAction();
+//           return;
+//         }
+//         pad.getLastEdit(function (err, time) {
+//           padData.push({
+//             name: padName,
+//             lastRevision: pad.head,
+//             lastAccess: time
+//           });
+
+
+
+// exports.listAllPads = function(callback) // PadManager.js
+// {
+//   padList.getPads(function(list) {
+//    callback && callback(null, {padIDs: list});
+//   });
+// }
+
+// var padList = {
+//     getPads: function(callback){
+//     this.load(function() {
+//       if(!padList.sorted){
+//         padList.list = padList.list.sort();
+//         padList.sorted = true;
+//       }
+//     callback && callback(padList.list);
+//     })
+//   },
+// }
+
+
+// listSessionsOfAuthor?authorID=a.GFsOQnO4ox6k1Ypy&apikey=2d5c7f62c89a0439461c79d95dda19c230093ca2dad09858669507e18fccef71
+
+
+// listPads?groupID=*&apikey=2d5c7f62c89a0439461c79d95dda19c230093ca2dad09858669507e18fccef71
+
+// getText?padID=Nummer1&apikey=2d5c7f62c89a0439461c79d95dda19c230093ca2dad09858669507e18fccef71
+
+// POST into WIKI:
+// submit article to database
+// var data = JSON.stringify({
+//     "body": "This will prbbly be my lst post.",
+//     "pub_date": "2011-05-22T00:46:38",
+//     "slug": "another-post",
+//     "title": "Another Post"
+// });
+
+// $.ajax({
+//   url: 'http://localhost:8000/api/v1/entry/',
+//   type: 'POST',
+//   contentType: 'application/json',
+//   data: data,
+//   dataType: 'json',
+//   processData: false
+// })
+
+  </script>
+  {% endaddtoblock %}
+
+  <h1 class="page-header">{% trans "Articles in etherpad.openeconomics.academy" %}</h1>
+  
+  <button type="submit" name="reload" class="btn btn-primary btn-sm">
+    {% trans "Reload" %} <span class="fa fa-refresh"></span>
+  </button>
+  {% trans "Search (full text)" %} <input ng-model="query" type="text"/>
+
+    <table class="table table-striped">
+      <tr>
+        <th>{% trans "Title" %}</th>
+        <th>{% trans "is published" %}</th>
+        <th>{% trans "Last modified" %}</th>
+        <th>{% trans "" %}</th>
+      </tr>
+      {% verbatim %}
+      <tr ng-repeat="article in data | filter:query">
+        <td>
+          <a href="{% url 'wiki:get' path=urlpath.path %}"> {{article.title}} </a> 
+        </td>
+        <td>
+          <div></div> 
+        </td>
+        <td>
+          <a href=""> {{article.modified}} </a> 
+        </td>
+        <td>
+        {% endverbatim %}
+              <a href="{% url 'wiki:get' path=parent_urlpath.path %}" class="btn btn-default btn-sm">
+                {% trans "Edit: etherpad" %}
+                <span class="fa fa-external-link"></span>
+              </a>
+              <button type="submit" name="save_changes" class="btn btn-primary btn-sm">
+                {% trans "Publish" %}
+                <span class="fa fa-check-square-o"></span>
+              </button>
+              <button type="submit" name="save_changes" class="btn btn-primary btn-sm">
+                {% trans "Unpublish" %}
+                <span class="fa fa-close"></span>
+              </button>
+        </td>
+      </tr>
+
+  </table>
+{# {% include "wiki/includes/pagination.html" %} #}
+
+
+{% endblock %}
+
