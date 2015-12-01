@@ -12,13 +12,15 @@ pip install -r requirements.pip
 ```
 
 
-Make database (by now sqlite) ready
+Make database (by now sqlite) ready and then collect static files 
 
 ```
 python manage.py syncdb
 python manage.py makemigrations
 python manage.py migrate
+python manage.py collectstatic
 ```
+
 
 To test with the python development server:
 

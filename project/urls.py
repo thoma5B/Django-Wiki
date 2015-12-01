@@ -16,32 +16,36 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+from django.conf.urls.i18n import i18n_patterns
+from wiki.urls import get_pattern as get_wiki_pattern
+from django_nyt.urls import get_pattern as get_nyt_pattern
+
+from tastypie.api import Api
+from wiki.api import ArticleResource, ArticleRevisionResource, SlugResource
+# , UserResource
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     # url(r'^/', include(app.urls)),
 ]
 
 
-from django.conf.urls.i18n import i18n_patterns
-from wiki.urls import get_pattern as get_wiki_pattern
-from django_nyt.urls import get_pattern as get_nyt_pattern
 urlpatterns += [
     url(r'^i18n/', include('django.conf.urls.i18n')),
 ]
-# print 'django.conf.urls.i18n::::', url(r'^i18n/', include('django.conf.urls.i18n'))
 urlpatterns += i18n_patterns(
     url(r'^notifications/', get_nyt_pattern()),
     url(r'', get_wiki_pattern()),
 )
-# urlpatterns = i18n_patterns(*urlpatterns)
 
+# Tastypie-API
+##############
 
-from tastypie.api import Api
-from wiki.api import ArticleResource, ArticleRevisionResource#, UserResource
 v1_api = Api(api_name='v1')
 # v1_api.register(UserResource())
 v1_api.register(ArticleResource())
 v1_api.register(ArticleRevisionResource())
+v1_api.register(SlugResource())
 urlpatterns += [
     url(r'^api/', include(v1_api.urls)),
 ]

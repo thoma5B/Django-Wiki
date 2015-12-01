@@ -17,6 +17,7 @@ from wiki import managers
 from mptt.models import MPTTModel
 from django.core.urlresolvers import reverse
 
+
 # Django 1.9 deprecation of IPAddressField
 try:
     from django.db.models.fields import GenericIPAddressField as IPAddressField
@@ -127,22 +128,6 @@ class Article(models.Model):
                 if max_num and cnt > max_num:
                     return
                 yield child
-
-    # def get_siblings(self, max_num=None, user_can_read=None, **kwargs):
-    #     """NB! This generator is expensive, so use it with care!!"""
-    #     cnt = 0
-    #     for obj in self.articleforobject_set.filter(is_mptt=True):
-    #         if user_can_read:
-    #             objects = obj.content_object.get_siblings().filter(
-    #                 **kwargs).can_read(user_can_read)
-    #         else:
-    #             objects = obj.content_object.get_siblings().filter(**kwargs)
-    #         for item in objects.order_by(
-    #                 'articles__article__current_revision__title'):
-    #             cnt += 1
-    #             if max_num and cnt > max_num:
-    #                 return
-    #             yield item
 
     # All recursive permission methods will use descendant_objects to access
     # generic relations and check if they are using MPTT and have

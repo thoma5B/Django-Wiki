@@ -1,0 +1,15 @@
+.dropdown-menu .hover .sub-menu {
+    left: 100%;
+    position: absolute;
+    bottom: 0px;
+    visibility: hidden;
+    margin-top: -1px;
+}
+
+.dropdown-menu .hover li:hover .sub-menu {
+    visibility: visible;
+}
+
+.dropdown:hover .dropdown-menu .hover{
+    display: block;
+}

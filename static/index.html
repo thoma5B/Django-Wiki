@@ -1,0 +1,147 @@
+  <script type="text/javascript" src="/static/admin/js/urlify.js"></script>
+  <script type="text/javascript" src="/static/angular/router.js"></script>
+
+     <script src="/static/wiki/js/jquery.min.js"></script>
+    <script src="/static/wiki/js/core.js"></script>
+    <script src="/static/wiki/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Optionally enable responsive features in IE8 -->
+    <script src="/static/wiki/js/respond.min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/umd/dropdown.js"></script> -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular-route.min.js"></script>
+
+  
+     <script>
+// $(document).ready(function(){
+      var BASE_URL = "http://127.0.0.1:8000/api/v1/"
+      var mainApp = angular.module('mainApp', ['ngRoute']);
+
+      // console.log('djangoUrl', djangoUrl)
+
+      mainApp.config(function($routeProvider) {
+        $routeProvider
+          .when('/', {
+            templateUrl: 'templates/articlelist.js', // will be further redirected by urls.py
+            controller: 'MainController'
+          })
+          .when('/:articleID', {
+            templateUrl: 'templates/article_view',
+            controller: 'EtherpadController'
+          })
+          .otherwise({
+            redirectTo: '/'
+          })
+      })
+
+      mainApp.factory('articleFactory', function($http){
+        
+        function getData(callback){
+          $http({
+            method: 'GET',
+            url: BASE_URL + "content/",
+            cache: true
+          }).success(callback);
+        }
+        return {
+          list: function(callback){
+            getData(function(data) {
+              var articles = data.objects
+              callback(articles)
+            })
+          },
+          find: function(ID, callback){
+            getData(function(data) {
+              var article = data.objects.filter(function(article){
+                return article.id == ID;
+              })[0];
+              // content = $http.get()
+              callback(article);
+            })
+          }
+        }
+      })
+
+      // MainController.$inject = ['$scope', '$http', articleFactory]
+      mainApp.controller('MainController', MainController)
+      function MainController ($scope, $http, articleFactory){
+        articleFactory.list(function(articles) {
+          $scope.articles = articles
+        })
+      }
+      
+      // EtherpadController.$inject = ['$scope', '$routeParams', '$http']
+      mainApp.controller('EtherpadController', EtherpadController)
+      function EtherpadController ($scope, $routeParams, $http, articleFactory){
+        articleFactory.find($routeParams.articleID, function(article) {
+          console.log(article)
+          $scope.article = article;
+        })
+      }
+
+// submit article to database
+// var data = JSON.stringify({
+//     "body": "blabla bla",
+//     "pub_date": "2011-05-22T00:46:38",
+//     "slug": "another-post",
+//     "title": "Another Post"
+// });
+
+// $.ajax({
+//   url: 'http://localhost:8000/api/v1/entry/',
+//   type: 'POST',
+//   contentType: 'application/json',
+//   data: data,
+//   dataType: 'json',
+//   processData: false
+// })
+
+
+</script>
+<div ng-view></div>
+
+<div id="mainFrame">
+  <h1 class="page-header"> "Articles in etherpad.openeconomics.academy" </h1>
+  
+  <button type="submit" name="reload" class="btn btn-primary btn-sm">
+     "Reload"  <span class="fa fa-refresh"></span>
+  </button>
+   "Search (full text)"  <input ng-model="query" type="text"/>
+
+
+    <table class="table table-striped">
+      <tr>
+        <th> "Title" </th>
+        <th> "is published" </th>
+        <th> "Last modified" </th>
+        <th> "" </th>
+      </tr>
+
+      <tr ng-repeat="article in articles | filter: article.deleted |  filter:query">  <!--TODO: article content-->
+        <td>
+          <a href="#/{{article.id}}">  {{article.url}}, {{article.title}} </a> 
+        </td>
+        <td>
+          <div></div> 
+        </td>
+        <td>
+          <a href=""> {{article.modified | date : format : short}} </a> 
+        </td>
+        <td>
+
+          <a href="{% url 'wiki:get' path=parent_urlpath.path " class="btn btn-default btn-sm">
+             "Edit" 
+            <span class="fa fa-pencil-square-o"></span>
+          </a>
+          <button type="submit" name="save_changes" class="btn btn-primary btn-sm">
+             "Publish" 
+            <span class="fa fa-check-square-o"></span>
+          </button>
+          <button type="submit" name="save_changes" class="btn btn-primary btn-sm">
+             "Unpublish" 
+            <span class="fa fa-minus-square-o"></span>
+          </button>
+        </td>
+      </tr>
+
+  </table>
+</div>

@@ -1,4 +1,4 @@
-from tastypie.resources import ModelResource
+from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.authorization import Authorization
 from wiki.models import Article, ArticleRevision, URLPath
 
@@ -18,23 +18,35 @@ class UserResource(ModelResource):
 
 
 class ArticleResource(ModelResource):
+    current_revision = fields.ToOneField('wiki.api.ArticleRevisionResource', 'current_revision')
+    
     class Meta:
         queryset = Article.objects.all()
+        # url = get_absolute_url
         resource_name = 'article'  # this is the default resource name
+        # fields = ['url']
+        filtering = {'current_revision': ALL}
         authorization = Authorization()
 
 
 class ArticleRevisionResource(ModelResource):
+    article = fields.ForeignKey(ArticleResource, 'article')
+
     class Meta:
         queryset = ArticleRevision.objects.all()
         resource_name = 'content'
-        #fields = ['content', 'title', 'modified']
+        # fields = ['id', 'title', 'modified', 'resource_uri', 'deleted', 'article']
+        filtering = {'article': ALL_WITH_RELATIONS}
         authorization = Authorization()
 
 
 class SlugResource(ModelResource):
+    article = fields.ForeignKey(ArticleResource, 'article')
+    # obj_get
+
     class Meta:
         queryset = URLPath.objects.get_queryset()
         resource_name = 'slug'
-        fields = ['slug']
+        # fields = ['slug']
+        filtering = {'article': ALL_WITH_RELATIONS}
         authorization = Authorization()

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html ng-app="mainApp">
+<head>
+  <meta charset="utf-8">
+  <title>Angular.js Example</title>
+  <script type="text/javascript" src="/static/templates/router.js"></script>
+
+     <script src="/static/wiki/js/jquery.min.js"></script>
+    <script src="/static/wiki/js/core.js"></script>
+    <script src="/static/wiki/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Optionally enable responsive features in IE8 -->
+    <script src="/static/wiki/js/respond.min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/umd/dropdown.js"></script> -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular-route.min.js"></script>
+
+    <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular-sanitize.js"></script>
+     <script>
+// $(document).ready(function(){
+      var BASE_URL = "http://127.0.0.1:8000/api/v1/"
+      var mainApp = angular.module('mainApp', ['ngRoute','ngSanitize']);
+
+      // console.log('djangoUrl', djangoUrl)
+
+      mainApp.config(function($routeProvider) {
+        $routeProvider
+          .when('/', {
+            templateUrl: 'articlelist.html', 
+            controller: 'MainController'
+          })
+          .when('/:articleID', {
+            templateUrl: 'article_view.html',
+            controller: 'EtherpadController'
+          })
+          .otherwise({
+            redirectTo: '/'
+          })
+      })
+
+      mainApp.factory('articleFactory', function($http){
+        
+        function getData(callback){
+          $http({
+            method: 'GET',
+            url: BASE_URL + "content/",
+            cache: true
+          }).success(callback);
+        }
+        return {
+          list: function(callback){
+            getData(function(data) {
+              var articles = data.objects
+              callback(articles)
+            })
+          },
+          find: function(ID, callback){
+            getData(function(data) {
+              var article = data.objects.filter(function(article){
+                return article.id == ID;
+              })[0];
+              // content = $http.get()
+              callback(article);
+            })
+          },
+          post: function(slug, content, callback){
+            var object = {"content": content, "title":title}
+            $http({
+              method: 'POST',
+              data: data,
+              url: BASE_URL + "entry/" + slug,  // ?? or number ?? check in tastypie how to post
+            }).success(callback); // TODO: implement cycling button
+          }
+        }
+      })
+
+      // MainController.$inject = ['$scope', '$http', articleFactory]
+      mainApp.controller('MainController', MainController)
+      function MainController ($scope, $http, articleFactory){
+        articleFactory.list(function(articles) {
+          $scope.articles = articles
+        })
+      }
+      
+      // EtherpadController.$inject = ['$scope', '$routeParams', '$http']
+      mainApp.controller('EtherpadController', EtherpadController)
+      function EtherpadController ($scope, $routeParams, $http, articleFactory){
+        articleFactory.find($routeParams.articleID, function(article) {
+          console.log(article)
+          $scope.article = article
+          padName = article.title
+          slug = URLify(padName)
+          // console.log(slug)
+          $scope.head = '<div id="remark"> Each article is required to have exactly one heading of type "heading 1" </div>'
+
+          $scope.edit = function(){
+            $('#Container').empty()
+            $('#Container').pad({'padId':padName.replace(' ','_'),'showChat':'false'}) 
+          }
+          $scope.publish = function(){
+            $('#Container').empty()
+            $('#Container').pad(
+              {'padId':padName.replace(' ','_'), 'getContents':'Container'}, 
+              function(data){
+                articleFactory.post(slug, data, function(){
+                  console.log(data, 'posted!')
+                })
+              }
+            )
+          }
+          $scope.edit()
+        })
+      }
+
+      // mainApp.directive('pad', function(){
+      //   return {
+      //     restrict:'A',
+      //     link: function(scope,el,atts){
+      //       console.log('el.slice(2)',el.slice(2))
+      //       el.pad({'getContents': el.slice(2)})
+      //     }
+      //   }
+      // })
+
+// submit article to database
+// var data = JSON.stringify({
+//     "body": "blabla bla",
+//     "pub_date": "2011-05-22T00:46:38",
+//     "slug": "another-post",
+//     "title": "Another Post"
+// });
+
+// $.ajax({
+//   url: 'http://localhost:8000/api/v1/entry/',
+//   type: 'POST',
+//   contentType: 'application/json',
+//   data: data,
+//   dataType: 'json',
+//   processData: false
+// })
+
+
+</script>
+<div ng-view></div>
+  <script type="text/javascript" src="/static/etherpad_lite/urlify.js"></script>
+    <script src="/static/etherpad_lite/etherpad.js"></script>
+</html>

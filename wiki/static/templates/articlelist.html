@@ -1,0 +1,48 @@
+<!--template free from django templatetags-->
+
+  <h1 class="page-header"> "Articles in etherpad.openeconomics.academy" </h1>
+  
+  <button type="submit" name="reload" class="btn btn-primary btn-sm">
+    "Reload"  <span class="fa fa-refresh"></span>
+  </button>
+ "Search (full text)"  <input ng-model="query" type="text"/>
+
+
+    <table class="table table-striped">
+      <tr>
+        <th>"Title"</th>
+        <th>"is published"</th>
+        <th>"Last modified"</th>
+        <th>""</th>
+      </tr>
+
+      <tr ng-repeat="article in articles | filter: article.deleted |  filter:query">  <!--TODO: article content-->
+        <td>
+          <a href="#/{{article.id}}">  {{article.url}}, {{article.title}} </a> 
+        </td>
+        <td>
+          <div></div> 
+        </td>
+        <td>
+          <a href=""> {{article.modified | date : format : short}} </a> 
+        </td>
+        <td>
+
+          <a href="" class="btn btn-default btn-sm">
+            "Edit"
+            <span class="fa fa-pencil-square-o"></span>
+          </a>
+          <button type="submit" name="save_changes" class="btn btn-primary btn-sm">
+            "Publish"
+            <span class="fa fa-check-square-o"></span>
+          </button>
+          <button type="submit" name="save_changes" class="btn btn-primary btn-sm">
+            "Unpublish"
+            <span class="fa fa-minus-square-o"></span>
+          </button>
+        </td>
+      </tr>
+
+  </table>
+
+

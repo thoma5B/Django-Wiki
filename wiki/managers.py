@@ -159,6 +159,10 @@ class ArticleManager(QuerySetCompatMixin, models.Manager):
     def can_write(self, user):
         return self.get_queryset_compat().can_write(user)
 
+    def get_URLPath(self):
+        return URLPath.objects.filter()
+
+
     if django.VERSION < (1, 6):
         get_query_set = get_queryset
 

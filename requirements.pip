@@ -11,3 +11,4 @@ Markdown==2.3.1
 django-classy-tags==0.4
 sorl-thumbnail==12.4a1
 django-tastypie==0.12.2
+django-angular==0.7.15

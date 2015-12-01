@@ -81,10 +81,16 @@ class WikiURLPatterns(object):
                 TemplateView.as_view(template_name="wiki/padlist.html",
                                      content_type='text/html'),
                 name='padlist'),
-            url('^_revision/articlelist/$',
-                TemplateView.as_view(template_name="wiki/articlelist.html",
-                                     content_type='text/html'),
-                name='articlelist'),
+            # url('^articlelist$',
+            #     TemplateView.as_view(template_name="angular/templates/articlelist.html",
+            #                          content_type='text/html'),
+            #     name='articlelist'),
+            # url('^article_view$',
+            #     TemplateView.as_view(template_name="angular/templates/article_view.html",
+            #                          content_type='text/html'),
+            #     name='article_view'),
+            #url('^ng$', 'wiki.views.ng.index',
+            #    name='ng_article_view'),
         ]
         return urlpatterns
 

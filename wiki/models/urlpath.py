@@ -41,6 +41,11 @@ from wiki.models.article import ArticleRevision, ArticleForObject, Article
 log = logging.getLogger(__name__)
 
 
+# class Slug(models.Model):
+#     slug = models.SlugField(verbose_name=_('slug'), null=True, blank=True,
+#                            max_length=SLUG_MAX_LENGTH)
+
+
 @python_2_unicode_compatible
 class URLPath(MPTTModel):
 
@@ -86,6 +91,9 @@ class URLPath(MPTTModel):
         blank=True,
         related_name='children')
 
+    # slug2 = models.OneToOneField(Slug)
+
+
     def __init__(self, *args, **kwargs):
         pass
         # Fixed in django-mptt 0.5.3
@@ -97,7 +105,7 @@ class URLPath(MPTTModel):
         This returns the ancestors of this urlpath. These ancestors are
         hopefully cached from the article path lookup. Accessing a foreign
         key included in add_selecte_related on one of these ancestors will
-        not occur an additional sql query, as they were retrieved with a 
+        not occur an additional sql query, as they were retrieved with a
         select_related.
 
         If the cached ancestors were not set explicitly, they will be retrieved
