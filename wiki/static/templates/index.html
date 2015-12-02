@@ -16,14 +16,18 @@
 
     <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular-sanitize.js"></script>
+  <script type="text/javascript" src="/static/etherpad_lite/urlify.js"></script>
+  <script type="text/javascript" src="/static/etherpad_lite/etherpad.js"></script>
+
      <script>
 // $(document).ready(function(){
       var BASE_URL = "http://127.0.0.1:8000/api/v1/"
+      var Etherpad_HOST_URL = "http://pad.open-academy.eu"
       var mainApp = angular.module('mainApp', ['ngRoute','ngSanitize']);
 
       // console.log('djangoUrl', djangoUrl)
 
-      mainApp.config(function($routeProvider) {
+      mainApp.config(function($routeProvider) {  //TODO: put js in app.js and 
         $routeProvider
           .when('/', {
             templateUrl: 'articlelist.html', 
@@ -51,6 +55,7 @@
           list: function(callback){
             getData(function(data) {
               var articles = data.objects
+              console.log('articles: ',articles)
               callback(articles)
             })
           },
@@ -95,7 +100,11 @@
 
           $scope.edit = function(){
             $('#Container').empty()
-            $('#Container').pad({'padId':padName.replace(' ','_'),'showChat':'false'}) 
+            $('#Container').pad({
+              'padId':padName.replace(' ','_'), 
+              'host':Etherpad_HOST_URL, 
+              'showChat':'false'
+            }) 
           }
           $scope.publish = function(){
             $('#Container').empty()
@@ -142,6 +151,4 @@
 
 </script>
 <div ng-view></div>
-  <script type="text/javascript" src="/static/etherpad_lite/urlify.js"></script>
-    <script src="/static/etherpad_lite/etherpad.js"></script>
 </html>

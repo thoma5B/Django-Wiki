@@ -25,8 +25,8 @@ SECRET_KEY = '*gq@($j)#ta@-8kymf4fkko2+54ag@wfkmqh3ubg%xhrz3jbn*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['127.0.0.1:8000', 'localhost', '.open-academy.eu']
+HOST_NAME = 'wiki.open-academy.eu'
 
 # Application definition
 

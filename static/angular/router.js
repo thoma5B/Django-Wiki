@@ -1,1 +1,1 @@
-console.log('router.js');
+console.log('router.js in the collect-static folder');

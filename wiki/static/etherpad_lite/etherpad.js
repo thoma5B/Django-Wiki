@@ -2,7 +2,7 @@
 (function( $ ){
   $.fn.pad = function( options, postDataCallback) {
     var settings = {
-      'host'              : 'http://88.198.109.117',
+      'host'              : 'http://pad.open-academy.eu',
       'baseUrl'           : '/p/',
       'showControls'      : true,
       'showChat'          : false,
