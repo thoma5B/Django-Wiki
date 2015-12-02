@@ -10,15 +10,15 @@
 
     <table class="table table-striped">
       <tr>
-        <th>"Title"</th>
-        <th>"is published"</th>
-        <th>"Last modified"</th>
-        <th>""</th>
+        <th>Title</th>
+        <th>is published</th>
+        <th>Last modified</th>
+        <th></th>
       </tr>
 
       <tr ng-repeat="article in articles | filter: article.deleted |  filter:query">  <!--TODO: article content-->
         <td>
-          <a href="#/{{article.id}}">  {{article.url}}, {{article.title}} </a> 
+          <a href="#/{{article.slug}}">  {{article.title}} </a> 
         </td>
         <td>
           <div></div> 

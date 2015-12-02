@@ -8,6 +8,7 @@
      <script src="/static/wiki/js/jquery.min.js"></script>
     <script src="/static/wiki/js/core.js"></script>
     <script src="/static/wiki/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <!-- Optionally enable responsive features in IE8 -->
     <script src="/static/wiki/js/respond.min.js"></script>
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/umd/dropdown.js"></script> -->
@@ -33,7 +34,7 @@
             templateUrl: 'articlelist.html', 
             controller: 'MainController'
           })
-          .when('/:articleID', {
+          .when('/:articleSlug', {
             templateUrl: 'article_view.html',
             controller: 'EtherpadController'
           })
@@ -51,65 +52,89 @@
             cache: true
           }).success(callback);
         }
-        return {
-          list: function(callback){
-            getData(function(data) {
-              var articles = data.objects
-              console.log('articles: ',articles)
+
+        function getLatestArticles(callback){
+          getData(function(data) {
+            var articles = data.objects
+            getLatest(articles, function(articles){
               callback(articles)
             })
+          })
+        }
+
+        return {
+          list: function(callback) {
+            getLatestArticles(callback)
           },
-          find: function(ID, callback){
-            getData(function(data) {
-              var article = data.objects.filter(function(article){
-                return article.id == ID;
-              })[0];
+          find: function(Slug, callback){
+            getLatestArticles(function(articles) {
+              console.log(articles) // undefined
+              var article = articles.find( function(article){
+                slug = URLify(article.title)
+                return slug == Slug;
+              });
               // content = $http.get()
               callback(article);
             })
           },
-          post: function(slug, content, callback){
+          post: function(Slug, content, callback){
             var object = {"content": content, "title":title}
             $http({
               method: 'POST',
               data: data,
-              url: BASE_URL + "entry/" + slug,  // ?? or number ?? check in tastypie how to post
+              url: BASE_URL + "entry/" + Slug,  // ?? or number ?? check in tastypie how to post
             }).success(callback); // TODO: implement cycling button
           }
         }
       })
 
+      // to obtain the last of the articles of the same title
+      function getLatest(articles, callback){
+        // console.log('articles: ',articles)
+        var len = articles.length
+        var unique_list = []
+        var titles = _(articles).map(function(item){ return item.title })
+        _.uniq(titles).forEach( function(title, i){
+          var last = _(articles).findLastIndex({ 'title' : title}) 
+          unique_list.push(articles[last])
+        })
+        callback(unique_list)
+      }
+      
       // MainController.$inject = ['$scope', '$http', articleFactory]
       mainApp.controller('MainController', MainController)
       function MainController ($scope, $http, articleFactory){
-        articleFactory.list(function(articles) {
+        articleFactory.list( function(articles) {
+          // console.log('in controller: ',articles)
+          addSlugs(articles)
           $scope.articles = articles
         })
       }
-      
+
       // EtherpadController.$inject = ['$scope', '$routeParams', '$http']
       mainApp.controller('EtherpadController', EtherpadController)
       function EtherpadController ($scope, $routeParams, $http, articleFactory){
-        articleFactory.find($routeParams.articleID, function(article) {
+        articleFactory.find($routeParams.articleSlug, function(article) {
+          var slug = URLify(article.title)
+          article.slug = slug
           console.log(article)
+          var padName = article.title.replace(' ','_') // here: capital letter admitted
           $scope.article = article
-          padName = article.title
-          slug = URLify(padName)
-          // console.log(slug)
           $scope.head = '<div id="remark"> Each article is required to have exactly one heading of type "heading 1" </div>'
 
           $scope.edit = function(){
             $('#Container').empty()
             $('#Container').pad({
-              'padId':padName.replace(' ','_'), 
-              'host':Etherpad_HOST_URL, 
+              'padId': padName,  
+              'host': Etherpad_HOST_URL, 
               'showChat':'false'
             }) 
           }
+
           $scope.publish = function(){
             $('#Container').empty()
             $('#Container').pad(
-              {'padId':padName.replace(' ','_'), 'getContents':'Container'}, 
+              {'padId':padName, 'getContents':'Container'}, 
               function(data){
                 articleFactory.post(slug, data, function(){
                   console.log(data, 'posted!')
@@ -117,7 +142,15 @@
               }
             )
           }
+
           $scope.edit()
+        })
+      }
+
+      function addSlugs(articles){
+        _(articles).map( function(article){
+          article.slug = URLify(article.title)
+          return article
         })
       }
 
