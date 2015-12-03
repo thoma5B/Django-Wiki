@@ -4,9 +4,6 @@
 
 "use strict"
 
-var BASE_URL = "http://127.0.0.1:8000/api/v1/"
-var Etherpad_HOST_URL = "http://pad.open-academy.eu"
-
 // define mainApp and dependencies
 var mainApp = angular.module('mainApp', ['ngRoute','ngSanitize']);
 
