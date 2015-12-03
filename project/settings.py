@@ -14,7 +14,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print "BASE_DIR:", BASE_DIR
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -23,10 +23,16 @@ print "BASE_DIR:", BASE_DIR
 SECRET_KEY = '*gq@($j)#ta@-8kymf4fkko2+54ag@wfkmqh3ubg%xhrz3jbn*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+ALLOWED_HOSTS = []
+
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1:8000', 'localhost', '.open-academy.eu']
-HOST_NAME = 'wiki.open-academy.eu'
+if DEBUG:
+    HOST_NAME = '127.0.0.1:8000'
+    print "BASE_DIR:", BASE_DIR
+else:
+    HOST_NAME = 'wiki.open-academy.eu'
+    ALLOWED_HOSTS = ['127.0.0.1:8000', 'localhost', '.open-academy.eu']
 
 # Application definition
 

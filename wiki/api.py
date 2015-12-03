@@ -36,8 +36,11 @@ class ArticleRevisionResource(ModelResource):
         queryset = ArticleRevision.objects.all()
         resource_name = 'content'
         # fields = ['id', 'title', 'modified', 'resource_uri', 'deleted', 'article']
-        filtering = {'article': ALL_WITH_RELATIONS}
+        filtering = {'article': ALL_WITH_RELATIONS, 'title': ALL_WITH_RELATIONS}
         authorization = Authorization()
+        default_format = "application/json"
+        #serializer = Serializer()
+        allowed_methods = ['get','post','patch']
 
 
 class SlugResource(ModelResource):
@@ -48,5 +51,5 @@ class SlugResource(ModelResource):
         queryset = URLPath.objects.get_queryset()
         resource_name = 'slug'
         # fields = ['slug']
-        filtering = {'article': ALL_WITH_RELATIONS}
+        filtering = {'article': ALL_WITH_RELATIONS, 'slug': ALL_WITH_RELATIONS}
         authorization = Authorization()
